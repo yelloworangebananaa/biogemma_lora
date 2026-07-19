@@ -1,4 +1,4 @@
-# biogemma_lora aka Gemma 4 E2B Biology LoRA Experiment
+# Gemma 4 E2B Biology LoRA Experiment (BioGemma)
 
 An experimental biology-focused LoRA fine-tune of Gemma 4 E2B using a subset of `trillionlabs/TheBioCollection`.
 
@@ -15,7 +15,7 @@ The fine-tuned model:
 - Did not improve overall biology benchmark accuracy
 - Decreased anatomy accuracy by 2 percentage points
 
-The current results demonstrate successful adaptation to the training domain, but they do **not** demonstrate that the fine-tuned model is generally better at biology than the base model.
+The current results demonstrate successful adaptation to biological text, but they do **not** demonstrate that the fine-tuned model is generally better at biology than the base model.
 
 ## Research Question
 
@@ -23,7 +23,7 @@ Can LoRA fine-tuning on biological and biomedical text improve Gemma 4 E2B’s p
 
 ## Main Findings
 
-The experiment produced two distinct results:
+The experiment produced two different results:
 
 1. The model became substantially better at predicting held-out biology text.
 2. That improvement did not translate into higher overall multiple-choice biology accuracy.
@@ -42,13 +42,13 @@ However, overall biology benchmark accuracy remained unchanged at **56.5%**.
 | High School Biology | 64.0% | 66.0% | +2.0 |
 | Medical Genetics | 50.0% | 50.0% | 0.0 |
 
-The two-point increase in high-school biology should not be interpreted as conclusive evidence of improvement. Depending on the size of the evaluated subset, this difference may represent only a small number of changed answers.
+The two-point increase in high-school biology should not be interpreted as conclusive evidence of improvement. Depending on the number of evaluated questions, this difference may represent only a small number of changed answers.
 
 ## Training Dynamics
 
 ### Held-Out Biology Loss
 
-![Held-out biology loss across training checkpoints](assets/held_out_biology_loss.png)
+![Held-out biology loss across training checkpoints](<held_out_biology_loss.png>)
 
 Held-out biology loss decreased consistently throughout training.
 
@@ -63,15 +63,15 @@ Held-out biology loss decreased consistently throughout training.
 
 Because held-out loss was still decreasing at the final checkpoint, the model had probably not fully converged when training stopped.
 
-This makes insufficient training one plausible explanation for the limited benchmark improvement. However, the experiment does not prove that additional training would improve multiple-choice accuracy.
+This makes insufficient training one plausible explanation for the limited benchmark improvement. However, this experiment does not prove that additional training would improve multiple-choice accuracy.
 
 ### Training Loss
 
-![Gemma 4 E2B biology training loss](assets/training_loss.png)
+![Gemma 4 E2B biology training loss](<training_loss.png>)
 
 The sampled training loss was noisy because individual batches contained examples with different lengths, formats, topics, and levels of difficulty.
 
-Despite the variation between steps, the overall trend decreased during training. This indicates that the LoRA adapters were learning statistical patterns from the biology dataset rather than remaining unchanged.
+Despite the variation between steps, the overall trend decreased during training. This indicates that the LoRA adapters learned statistical patterns from the biology dataset rather than remaining unchanged.
 
 ## Interpretation
 
@@ -79,27 +79,27 @@ The results are not necessarily contradictory.
 
 Next-token loss and multiple-choice accuracy measure different capabilities.
 
-### Held-Out Loss Measures
+### Held-Out Loss
 
 Held-out next-token loss measures how well the model predicts tokens in unseen biological and biomedical text.
 
 A lower held-out loss suggests that the model became better adapted to the language, terminology, and statistical patterns of the biology corpus.
 
-### Multiple-Choice Accuracy Measures
+### Multiple-Choice Accuracy
 
 The benchmark measures whether the model selects the correct answer from a set of choices.
 
-This requires more than familiarity with biological language. It may depend on:
+This may require:
 
 - Factual recall
 - Multi-step reasoning
 - Understanding the question format
 - Comparing similar answer choices
+- Rejecting distractors
 - Following answer-format instructions
-- Avoiding distractors
 - Producing a reliably parseable response
 
-A model can therefore improve at biological text prediction without improving at multiple-choice reasoning.
+A model can therefore improve at predicting biological text without improving at multiple-choice reasoning.
 
 ## Training Configuration
 
@@ -124,7 +124,7 @@ A model can therefore improve at biological text prediction without improving at
 | Training environment | Google Colab |
 | Training GPU | NVIDIA T4 |
 
-The maximum token count assumes every sequence reached the full 128-token limit. The actual number of non-padding training tokens may have been lower.
+The maximum token count assumes that every sequence reached the full 128-token limit. The actual number of non-padding training tokens may have been lower.
 
 ## Dataset
 
@@ -166,9 +166,8 @@ The experiment followed this general pipeline:
 ```text
 gemma4-e2b-biology-lora-experiment/
 ├── README.md
-├── assets/
-│   ├── held_out_biology_loss.png
-│   └── training_loss.png
+├── image(54).png
+├── image(55).png
 ├── notebooks/
 │   ├── training.ipynb
 │   ├── evaluation.ipynb
@@ -185,20 +184,18 @@ gemma4-e2b-biology-lora-experiment/
 └── LICENSE
 ```
 
-The exact structure may differ depending on which artifacts are included in the repository.
-
-Large model files should generally be uploaded to Hugging Face rather than committed directly to GitHub.
+Large merged model files and GGUF files should generally be uploaded to Hugging Face rather than committed directly to the GitHub repository.
 
 ## Installation
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gemma4-e2b-biology-lora-experiment.git
+git clone https://github.com/yelloworangebanananaa/gemma4-e2b-biology-lora-experiment.git
 cd gemma4-e2b-biology-lora-experiment
 ```
 
-Install the required Python packages:
+Install the required packages:
 
 ```bash
 pip install -r requirements.txt
@@ -219,7 +216,7 @@ pandas
 matplotlib
 ```
 
-Exact versions used for the original experiment should be recorded in `requirements.txt`.
+The exact package versions used for the original experiment should be recorded in `requirements.txt`.
 
 ## Loading the LoRA Adapter
 
@@ -279,11 +276,11 @@ print(
 )
 ```
 
-Replace `BASE_MODEL_ID` with the exact model identifier used during training.
+Replace `BASE_MODEL_ID` with the exact Hugging Face model identifier used during training.
 
 ## Using the GGUF Model
 
-After the merged model has been successfully converted to GGUF, it can be loaded in applications such as Ollama, LM Studio, or llama.cpp.
+After the merged model has been converted successfully, it can be loaded in Ollama, LM Studio, or llama.cpp.
 
 The expected quantized filename is:
 
@@ -293,7 +290,7 @@ gio-biology-gemma4-e2b-Q4_K_M.gguf
 
 ### Ollama
 
-Place the GGUF and `Modelfile` in the same directory:
+Place the GGUF and `Modelfile` in the same folder:
 
 ```text
 gio-biology/
@@ -340,7 +337,7 @@ ollama run gio-biology
 5. Increase GPU offloading until the model approaches the available VRAM limit.
 6. Use a low temperature for factual biology questions.
 
-A completed GGUF file is required. A partial BF16 file left behind by a killed conversion process should not be used.
+A completed GGUF file is required. A partial BF16 file left behind after a killed conversion process should not be used.
 
 ## Example Prompts
 
@@ -377,18 +374,17 @@ quorum sensing. Distinguish direct regulation from indirect effects.
 ```text
 Evaluate the following biological claim. Identify what is established,
 what is uncertain, and what experiment would best test it:
+
 [INSERT CLAIM]
 ```
 
 ## Limitations
 
-This experiment has several important limitations.
-
 ### Limited Training Duration
 
-Training ended after 500 optimizer steps. Held-out loss was still decreasing, so the final checkpoint was probably not fully converged.
+Training ended after 500 optimizer steps.
 
-However, continued loss reduction does not guarantee continued improvement on external benchmarks.
+Held-out loss was still decreasing, so the final checkpoint had probably not fully converged. However, continued loss reduction does not guarantee improved performance on external benchmarks.
 
 ### Short Sequence Length
 
@@ -400,9 +396,9 @@ This may have truncated:
 - Multi-step biological mechanisms
 - Complete scientific arguments
 - Instruction-response pairs
-- Relevant context surrounding technical terms
+- Context surrounding technical terms
 
-A longer context length may be more appropriate for scientific material.
+Longer sequences may be more appropriate for scientific material.
 
 ### Training-Objective Mismatch
 
@@ -464,9 +460,9 @@ Although evaluation questions were not intentionally added to the training subse
 
 The next version should focus on controlled experiments rather than simply increasing every training parameter.
 
-### Priority 1: Evaluate More Checkpoints
+### 1. Evaluate More Checkpoints
 
-Evaluate the model at regular checkpoints, such as:
+Evaluate the model at regular checkpoints:
 
 ```text
 500 steps
@@ -477,7 +473,7 @@ Evaluate the model at regular checkpoints, such as:
 
 This would show whether lower held-out loss eventually produces benchmark improvements or whether benchmark accuracy remains flat.
 
-### Priority 2: Increase Sequence Length
+### 2. Increase Sequence Length
 
 Test sequence lengths such as:
 
@@ -488,9 +484,9 @@ Test sequence lengths such as:
 
 Longer sequences would preserve more complete biological explanations and reasoning chains.
 
-### Priority 3: Improve the Dataset Mixture
+### 3. Improve the Dataset Mixture
 
-A stronger training mixture could include:
+A stronger mixture could include:
 
 - Biology textbook explanations
 - Biology question-answer pairs
@@ -501,7 +497,7 @@ A stronger training mixture could include:
 - Biochemistry calculations
 - Microbiology case analysis
 
-### Priority 4: Increase LoRA Capacity
+### 4. Increase LoRA Capacity
 
 Compare:
 
@@ -513,13 +509,13 @@ Rank 32
 
 This would test whether the adapter lacked sufficient capacity.
 
-### Priority 5: Use Multiple Seeds
+### 5. Use Multiple Random Seeds
 
-Repeat each configuration using multiple random seeds.
+Repeat each configuration with multiple random seeds.
 
-This would help determine whether small score changes are reproducible or caused by sampling variation.
+This would help determine whether small score changes are reproducible or caused by random variation.
 
-### Priority 6: Save Per-Question Predictions
+### 6. Save Per-Question Predictions
 
 For every benchmark question, record:
 
@@ -531,9 +527,9 @@ For every benchmark question, record:
 - Whether the answer changed
 - Whether the change was wrong-to-right or right-to-wrong
 
-This would provide more useful evidence than aggregate accuracy alone.
+This provides more useful evidence than aggregate accuracy alone.
 
-### Priority 7: Perform Paired Statistical Analysis
+### 7. Perform Paired Statistical Analysis
 
 Because the same questions are answered by both models, paired methods should be used.
 
@@ -546,13 +542,13 @@ Possible approaches include:
 
 ## Reproducibility
 
-For complete reproducibility, future releases should record:
+For stronger reproducibility, future releases should record:
 
-- Exact base model revision
+- Exact base-model revision
 - Exact dataset revision
 - Random seed
-- Sample-selection procedure
-- Full package versions
+- Sample-selection method
+- Complete package versions
 - Prompt template
 - Chat template
 - Decoding parameters
@@ -588,7 +584,7 @@ This model should not be relied upon for:
 
 The model may generate inaccurate, incomplete, outdated, or fabricated information.
 
-Any important scientific claim should be verified against reliable primary literature or expert guidance.
+Important scientific claims should be verified using reliable primary literature or expert guidance.
 
 ## Conclusion
 
@@ -600,7 +596,7 @@ However, this adaptation did not produce a measurable improvement in overall bio
 
 The continuing decline in held-out loss suggests that training may have stopped before convergence. Insufficient training is therefore a plausible explanation for the limited benchmark improvement, but it has not been established as the cause.
 
-The correct conclusion is not that the fine-tune succeeded or failed completely. It succeeded at domain-language adaptation but did not yet demonstrate reliable improvement in biology question answering.
+The project succeeded at domain-language adaptation but did not yet demonstrate reliable improvement in biology question answering.
 
 ## Model Release Status
 
@@ -629,7 +625,7 @@ Model weights, adapters, code, and dataset-derived artifacts may be subject to d
 
 This project used:
 
-- Gemma as the base model architecture
+- Gemma
 - Hugging Face Transformers
 - Hugging Face Datasets
 - PEFT
@@ -640,13 +636,11 @@ This project used:
 
 ## Citation
 
-When referencing this experiment, use:
-
 ```bibtex
 @software{kim_gemma4_biology_lora,
   author = {Gio Kim},
   title = {Gemma 4 E2B Biology LoRA Experiment},
   year = {2026},
-  url = {https://github.com/YOUR_USERNAME/gemma4-e2b-biology-lora-experiment}
+  url = {https://github.com/yelloworangebanananaa/gemma4-e2b-biology-lora-experiment}
 }
 ```
