@@ -42,7 +42,7 @@ However, overall biology benchmark accuracy remained unchanged at **56.5%**.
 | High School Biology | 64.0% | 66.0% | +2.0 |
 | Medical Genetics | 50.0% | 50.0% | 0.0 |
 
-The two-point increase in high-school biology should not be interpreted as conclusive evidence of improvement. Depending on the number of evaluated questions, this difference may represent only a small number of changed answers.
+Overall, some tradeoffs seemed to happen where it got better at High School Biology, but then lost its expertise in Anatomy.
 
 ## Training Dynamics
 
