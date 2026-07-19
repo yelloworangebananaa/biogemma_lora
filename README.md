@@ -48,7 +48,7 @@ The two-point increase in high-school biology should not be interpreted as concl
 
 ### Held-Out Biology Loss
 
-![Held-out biology loss across training checkpoints](<held_out_biology_loss.png>)
+![Held-out biology loss across training checkpoints](<training_loss.png>)
 
 Held-out biology loss decreased consistently throughout training.
 
@@ -67,7 +67,7 @@ This makes insufficient training one plausible explanation for the limited bench
 
 ### Training Loss
 
-![Gemma 4 E2B biology training loss](<training_loss.png>)
+![Gemma 4 E2B biology training loss](<held_out_biology_loss.png>)
 
 The sampled training loss was noisy because individual batches contained examples with different lengths, formats, topics, and levels of difficulty.
 
