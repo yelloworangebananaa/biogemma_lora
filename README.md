@@ -605,7 +605,7 @@ The project succeeded at domain-language adaptation but did not yet demonstrate 
 - [x] Base and fine-tuned benchmarks compared
 - [x] Adapter checkpoint saved
 - [x] Merged Hugging Face model created
-- [ ] GGUF conversion completed
+- [x] GGUF conversion completed
 - [ ] Quantized model uploaded
 - [ ] Multi-seed evaluation completed
 - [ ] Statistical significance analysis completed
@@ -641,6 +641,6 @@ This project used:
   author = {Gio Kim},
   title = {Gemma 4 E2B Biology LoRA Experiment},
   year = {2026},
-  url = {https://github.com/yelloworangebanananaa/gemma4-e2b-biology-lora-experiment}
+  url = {https://github.com/yelloworangebanananaa/biogemma_lora}
 }
 ```
